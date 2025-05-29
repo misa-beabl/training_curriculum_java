@@ -19,6 +19,8 @@ import in.tech_camp.training_curriculum_java.form.PlanForm;
 import in.tech_camp.training_curriculum_java.entity.PlanEntity;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @AllArgsConstructor
@@ -44,8 +46,8 @@ public class CalendarsController {
       newPlan.setPlan(planForm.getPlan());
       planRepository.insert(newPlan);
     }
-    return "redirect:/calendars";
-  }
+    return "redirect:/";
+  }  
 
   private List<Map<String, Object>> getWeek() {
     List<Map<String, Object>> weekDays = new ArrayList<>();
@@ -66,9 +68,13 @@ public class CalendarsController {
           }
       }
 
+      // 曜日番号を計算
+      int wdayNum = (todaysDate.getDayOfWeek().getValue() + x) % 7;
+
       dayMap.put("month", currentDate.getMonthValue());
       dayMap.put("date", currentDate.getDayOfMonth());
       dayMap.put("plans", todayPlans);
+      dayMap.put("wday", wdays[wdayNum]);
 
       weekDays.add(dayMap);
     }
